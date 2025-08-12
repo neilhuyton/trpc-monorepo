@@ -1,37 +1,25 @@
 import { createHTTPServer } from '@trpc/server/adapters/standalone';
-import cors from 'cors';
-import { appRouter } from './trpc/router';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
-const PORT = 3000;
+import { appRouter } from './router';
+import type { IncomingMessage, ServerResponse } from 'http';
 
 const server = createHTTPServer({
-  middleware: cors({ origin: 'http://localhost:5173' }),
   router: appRouter,
+  createContext: () => ({}), // Empty context
+  onError: ({ error }) => {
+    console.error('tRPC error:', error);
+  },
+  middleware: (req: IncomingMessage, res: ServerResponse, next: () => void) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    if (req.method === 'OPTIONS') {
+      res.statusCode = 204;
+      res.end();
+      return;
+    }
+    next();
+  },
 });
 
-server.listen(PORT);
-
-console.log(`Server listening on port ${PORT}`);
-
-// Handle process termination
-process.on('SIGTERM', async () => {
-  console.log('Received SIGTERM. Closing server...');
-  await prisma.$disconnect();
-  server.close(() => {
-    console.log('Server closed.');
-    process.exit(0);
-  });
-});
-
-process.on('SIGINT', async () => {
-  console.log('Received SIGINT. Closing server...');
-  await prisma.$disconnect();
-  server.close(() => {
-    console.log('Server closed.');
-    process.exit(0);
-  });
-});
-
-export type { AppRouter } from './trpc/router';
+server.listen(3000);
+console.log('Server running on http://localhost:3000');

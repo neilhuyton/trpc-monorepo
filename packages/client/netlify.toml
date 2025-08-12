@@ -1,0 +1,7 @@
+[build]
+  base = "packages/client"
+  publish = "dist"  # Adjust if your build output is different (e.g., `build` for Create React App)
+  command = "pnpm run build"
+
+[build.environment]
+  NODE_VERSION = "18"  # Match your Node version

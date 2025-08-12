@@ -1,0 +1,11 @@
+[build]
+  base = ""
+  command = "pnpm --filter server run generate && pnpm --filter client build && pnpm --filter server build"
+  publish = "packages/client/dist"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[functions]]
+  directory = "packages/server/functions"
+  node_bundler = "esbuild"
