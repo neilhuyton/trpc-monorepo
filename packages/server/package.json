@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon --exec 'tsx src/index.ts'"
+    "dev": "nodemon --watch src --ext ts,tsx --exec 'tsx src/index.ts' --signal SIGTERM"
   },
   "devDependencies": {
     "typescript": "^5.5.4",
