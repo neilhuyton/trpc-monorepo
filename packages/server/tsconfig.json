@@ -10,6 +10,6 @@
     "forceConsistentCasingInFileNames": true,
     "composite": true
   },
-  "include": ["src/**/*", "netlify/functions/**/*"],
+  "include": ["src/**/*", "netlify/functions/**/*", "netlify/build-functions.ts"],
   "exclude": ["node_modules"]
 }
