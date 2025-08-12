@@ -1,11 +1,10 @@
 [build]
   base = ""
-  command = "pnpm --filter server run generate && pnpm --filter client build && pnpm --filter server build"
+  command = "pnpm --filter server run generate && pnpm --filter server run build:functions && pnpm --filter client build && pnpm --filter server build"
   publish = "packages/client/dist"
 
 [build.environment]
   NODE_VERSION = "18"
 
 [functions]
-  directory = "packages/server/netlify/functions"
-  node_bundler = "esbuild"
+  directory = "netlify/functions"
