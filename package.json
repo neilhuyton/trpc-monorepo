@@ -1,0 +1,13 @@
+{
+  "name": "simple-pnpm-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "typescript": "^5.5.4"
+  },
+  "scripts": {
+    "build": "pnpm --filter @my-workspace/server run build && pnpm --filter @my-workspace/client run build",
+    "dev": "pnpm --filter @my-workspace/client run dev",
+    "preview": "pnpm --filter @my-workspace/client run preview"
+  }
+}
