@@ -8,8 +8,8 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "composite": true // Enable composite for project references
+    "composite": true
   },
-  "include": ["src/**/*", "functions/**/*"],
+  "include": ["src/**/*", "netlify/functions/**/*"],
   "exclude": ["node_modules"]
 }
