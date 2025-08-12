@@ -1,12 +1,20 @@
 import { build } from "esbuild";
 import { glob } from "glob";
 import { readdirSync, existsSync } from "fs";
-import { join, resolve } from "path";
+import { join, resolve, dirname } from "path";
+import { fileURLToPath } from "url";
+import { createRequire } from "module";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Create require function for ESM
+const require = createRequire(import.meta.url);
 
 async function bundleFunctions() {
   try {
     // Use absolute path for functions directory
-    const functionsDir = resolve(__dirname, "netlify/functions");
+    const functionsDir = resolve(__dirname, "functions");
     console.log("Resolved functions directory:", functionsDir);
 
     // Debug: Check if functions directory exists
@@ -26,10 +34,9 @@ async function bundleFunctions() {
     }
     console.log("Found function files:", functionFiles);
 
-    // Debug: Check Prisma Client directory
-    const prismaClientPath = resolve(
-      __dirname,
-      "../../node_modules/.pnpm/@prisma+client@5.22.0_prisma@5.22.0/node_modules/@prisma/client"
+    // Resolve Prisma Client path dynamically
+    const prismaClientPath = dirname(
+      require.resolve("@prisma/client/package.json")
     );
     if (!existsSync(prismaClientPath)) {
       throw new Error(
@@ -47,7 +54,7 @@ async function bundleFunctions() {
       target: "node18",
       format: "esm",
       sourcemap: true,
-      external: [],
+      external: [], // Include all dependencies in the bundle
       alias: {
         "@prisma/client": prismaClientPath,
       },
@@ -56,9 +63,9 @@ async function bundleFunctions() {
         {
           name: "prisma-engine",
           setup(build) {
-            build.onResolve({ filter: /@prisma\/client/ }, (args) => {
-              console.log("Resolving:", args.path);
-              return { path: join(prismaClientPath, args.path) };
+            build.onResolve({ filter: /^@prisma\/client$/ }, () => {
+              console.log("Resolving @prisma/client to:", prismaClientPath);
+              return { path: join(prismaClientPath, "index.js") };
             });
           },
         },

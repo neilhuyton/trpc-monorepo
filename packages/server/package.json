@@ -6,12 +6,12 @@
     "start": "node dist/index.js",
     "generate": "prisma generate",
     "dev": "nodemon src/index.ts",
-    "build:functions": "ts-node netlify/build-functions.ts"
+    "build:functions": "node netlify/build-functions.js"
   },
   "dependencies": {
-    "@prisma/client": "^5.0.0",
+    "@prisma/client": "^5.22.0",
     "@trpc/server": "^11.4.4",
-    "zod": "^3.0.0"
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.0",
@@ -20,7 +20,6 @@
     "glob": "^11.0.3",
     "nodemon": "^3.0.0",
     "prisma": "^5.0.0",
-    "ts-node": "^10.9.2",
     "tsx": "^4.0.0",
     "typescript": "^5.0.0"
   }
