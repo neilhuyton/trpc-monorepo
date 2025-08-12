@@ -2,16 +2,9 @@
 import { createHTTPServer } from '@trpc/server/adapters/standalone';
 import cors from 'cors';
 import { appRouter } from './trpc/router';
-
 const PORT = 3000;
-
-const server = createHTTPServer({
-  middleware: cors({ origin: 'http://localhost:5173' }),
-  router: appRouter,
-});
-
-server.listen(PORT);
-
+createHTTPServer({
+    middleware: cors({ origin: 'http://localhost:5173' }),
+    router: appRouter,
+}).listen(PORT);
 console.log(`Server listening on port ${PORT}`);
-
-export type { AppRouter } from './trpc/router';

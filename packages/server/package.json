@@ -5,9 +5,17 @@
   "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "dev": "nodemon --exec 'tsx src/index.ts'"
   },
   "devDependencies": {
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "nodemon": "^3.0.1",
+    "tsx": "^4.7.0",
+    "@types/cors": "^2.8.12"
+  },
+  "dependencies": {
+    "@trpc/server": "^11.0.0",
+    "cors": "^2.8.5"
   }
 }

@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "pnpm --filter @my-workspace/server run build && pnpm --filter @my-workspace/client run build",
-    "dev": "pnpm --filter @my-workspace/client run dev",
+    "dev": "pnpm --filter @my-workspace/server run dev & pnpm --filter @my-workspace/client run dev",
     "preview": "pnpm --filter @my-workspace/client run preview"
   }
 }
