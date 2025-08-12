@@ -1,6 +1,6 @@
-import { router, publicProcedure } from './trpc';
-import { PrismaClient } from '@prisma/client';
-import { z } from 'zod';
+import { router, publicProcedure } from "./trpc";
+import { PrismaClient } from "@prisma/client";
+import { z } from "zod";
 
 const prisma = new PrismaClient();
 
@@ -8,40 +8,40 @@ export const appRouter = router({
   greet: publicProcedure.query(() => {
     return "Hello from server!";
   }),
-  addWeight: publicProcedure
+  addMeasurement: publicProcedure
     .input(z.object({ value: z.number().positive() }))
     .mutation(async ({ input }) => {
-      const weight = await prisma.weight.create({
+      const measurement = await prisma.measurement.create({
         data: {
           value: input.value,
         },
       });
-      return weight;
+      return measurement;
     }),
-  getWeights: publicProcedure
+  getMeasurements: publicProcedure
     .input(
       z
         .object({
           startDate: z.string().optional(),
           endDate: z.string().optional(),
         })
-        .optional(),
+        .optional()
     )
     .query(async ({ input }) => {
-      return prisma.weight.findMany({
+      return prisma.measurement.findMany({
         where: {
           createdAt: {
             gte: input?.startDate ? new Date(input.startDate) : undefined,
             lte: input?.endDate ? new Date(input.endDate) : undefined,
           },
         },
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: "desc" },
       });
     }),
-  deleteWeight: publicProcedure
+  deleteMeasurement: publicProcedure
     .input(z.object({ id: z.number().int().positive() }))
     .mutation(async ({ input }) => {
-      await prisma.weight.delete({
+      await prisma.measurement.delete({
         where: { id: input.id },
       });
       return { success: true };

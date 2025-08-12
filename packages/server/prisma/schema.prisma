@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Weight {
+model Measurement {
   id        Int      @id @default(autoincrement())
   value     Float    @default(0)
   createdAt DateTime @default(now())

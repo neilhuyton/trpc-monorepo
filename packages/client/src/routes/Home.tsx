@@ -24,16 +24,16 @@ ChartJS.register(
 );
 
 export function Home() {
-  const [weight, setWeight] = useState("");
+  const [measurement, setWeight] = useState("");
   const [view, setView] = useState<"list" | "graph">("list");
-  const { data: weights, refetch } = trpc.getWeights.useQuery();
-  const mutation = trpc.addWeight.useMutation({
+  const { data: measurements, refetch } = trpc.getMeasurements.useQuery();
+  const mutation = trpc.addMeasurement.useMutation({
     onSuccess: () => refetch(),
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const value = parseFloat(weight);
+    const value = parseFloat(measurement);
     if (!isNaN(value) && value > 0) {
       mutation.mutate({ value });
       setWeight("");
@@ -42,11 +42,11 @@ export function Home() {
 
   const chartData = {
     labels:
-      weights?.map((w) => new Date(w.createdAt).toLocaleDateString()) || [],
+      measurements?.map((w) => new Date(w.createdAt).toLocaleDateString()) || [],
     datasets: [
       {
         label: "Weight (kg)",
-        data: weights?.map((w) => w.value) || [],
+        data: measurements?.map((w) => w.value) || [],
         borderColor: "rgba(75, 192, 192, 1)",
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         tension: 0.4,
@@ -63,9 +63,9 @@ export function Home() {
       <form onSubmit={handleSubmit}>
         <input
           type="number"
-          value={weight}
+          value={measurement}
           onChange={(e) => setWeight(e.target.value)}
-          placeholder="Enter weight in kg"
+          placeholder="Enter measurement in kg"
           step="0.1"
           min="0"
         />
@@ -79,7 +79,7 @@ export function Home() {
       </div>
       {view === "list" ? (
         <ul>
-          {weights?.map((w) => (
+          {measurements?.map((w) => (
             <li key={w.id}>
               {w.value} kg - {new Date(w.createdAt).toLocaleDateString()}
             </li>
